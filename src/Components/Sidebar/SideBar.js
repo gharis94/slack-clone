@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState} from 'react'
 import styled from 'styled-components';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import CreateIcon from '@mui/icons-material/Create';
@@ -7,22 +7,15 @@ import SidebarOption from '../SidebarOption/SidebarOption';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import { getRooms } from '../../utils/firebase';
+import { useSelector } from 'react-redux';
+import { chatRoomsSelector } from '../../features/chatRoom/chatRoomSlice';
 
 const SideBar = () => {
     const [isExpand,setIsExpand] = useState(true);
     const [isChannelExpand,setIsChannelExpand] = useState(true);
-    const [rooms,setRooms] = useState([]);
-
-    useEffect(()=>{
-        const fetchData = async()=>{
-            const rsp =await getRooms();
-            console.log(rsp)
-            setRooms(rsp)
-        }
-        fetchData()
-        
-    },[])
+    const rooms = useSelector(chatRoomsSelector);
+    
+    
     return (
     <>
         <SidebarHeader>

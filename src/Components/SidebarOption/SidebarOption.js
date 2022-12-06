@@ -1,11 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 import {addRoom} from '../../utils/firebase';
+import { useDispatch } from 'react-redux';
+import { setRoomId } from '../../features/room/roomSlice';
 
-const SidebarOption = ({title,icon,addChannelOption=false}) => {
+const SidebarOption = ({title,icon,id,addChannelOption=false}) => {
+    const dispatch=useDispatch();
     const selectChannel=()=>{
         if (title === 'Show More' || title === 'Show Less' || title === 'Channel') return;
         console.log('selected');
+        if(id){
+            console.log(id);
+            dispatch(setRoomId({id,title}))
+        }
     }
     const addChannel=async()=>{
         console.log('add')

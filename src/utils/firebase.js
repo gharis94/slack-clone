@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import {initializeApp} from "firebase/app";
 import {getAuth} from 'firebase/auth';
-import {collection,getFirestore,addDoc, getDocs} from 'firebase/firestore';
+import {collection,getFirestore,addDoc,getDoc, getDocs,doc,serverTimestamp, query} from 'firebase/firestore';
 import {useCollection} from 'react-firebase-hooks/firestore';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -29,13 +29,13 @@ export const db = getFirestore(app);
 export const addRoom =async(data)=>{
     const collectionRef = collection(db,'rooms');
     try{
-        const docRef = await addDoc(collectionRef,data);
+        await addDoc(collectionRef,data);
         return 
     }catch(error){
         return error.message
     }
 }
-
+//fetching rooms
 export const getRooms =async()=>{
     const collectionRef=collection(db,'rooms');
     try{
@@ -47,6 +47,37 @@ export const getRooms =async()=>{
         },[])
         return data;
     }catch(error){
-        return error.message;
+        console.log(error);
     }
+}
+//adding message to specify room
+export const addMessage =async(roomId,message)=>{
+    const collectionRef = collection(db,'rooms');
+    const docRef = doc(collectionRef,roomId);
+    const data = collection(docRef,'messages');
+    try{
+        await addDoc(data, {
+            message,
+            timeStamp: serverTimestamp(String),
+        })
+    }catch(error){
+        console.log(error.message)
+    }
+    
+} 
+
+//fetching message from room
+
+export const fetchMessages =async(id)=>{
+
+    const collectionRef = collection(db,'rooms',id,'messages')
+    console.log('a',collectionRef)
+    const querySnapShot =await getDocs(collectionRef);
+    querySnapShot.forEach(item=>console.log(item.id,item.data()))
+    // querySnapShot.map(item=>console.log('b',item.data()))
+    const data = querySnapShot.docs.reduce((acc,cur)=>{
+        acc=[...acc,cur.data()]
+        return acc;
+    },[])
+    return data;
 }

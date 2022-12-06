@@ -16,7 +16,7 @@ const Body = () => {
   )
 }
 
-export default Body
+export default Body;
 
 //style code below
 
@@ -36,7 +36,7 @@ const BodyLeft = styled.div`
 const BodyRight =styled.div`
     flex:.7;
     margin: 0 10px;
-    background-color: blue;
+    background-color: rgba(0,0,0,.08);
     border-radius: 10px;
     margin-top: 80px;
 `
